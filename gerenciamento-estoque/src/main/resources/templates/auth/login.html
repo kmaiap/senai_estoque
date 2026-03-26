@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Sistema de Estoque e Patrimonio</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="senai-main">
+        <section class="senai-form-section">
+            <div class="senai-form-card">
+                <h1 class="senai-title small">Login</h1>
+                <p class="senai-subtitle">Acesse usando NIF e senha.</p>
+
+                <div th:if="${erro}" class="senai-alert senai-alert-error">
+                    <p th:text="${erro}"></p>
+                </div>
+
+                <div th:if="${sucesso}" class="senai-alert senai-alert-success">
+                    <p th:text="${sucesso}"></p>
+                </div>
+
+                <form th:action="@{/auth/login}" method="post" class="senai-form">
+                    <label class="senai-label" for="nif">NIF</label>
+                    <input class="senai-input" id="nif" name="nif" type="text" maxlength="20"
+                           th:value="${nifDigitado}" placeholder="Digite seu NIF" required>
+
+                    <label class="senai-label" for="senha">Senha</label>
+                    <input class="senai-input" id="senha" name="senha" type="password"
+                           placeholder="Digite sua senha" required>
+
+                    <button class="senai-button full-width" type="submit">Entrar</button>
+                </form>
+
+                <p class="senai-helper">
+                    Ainda nao tem conta?
+                    <a class="senai-link" th:href="@{/cadastro}">Faca seu cadastro</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

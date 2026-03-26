@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | Sistema de Estoque e Patrimonio</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="senai-main">
+        <section class="senai-hero">
+            <div class="senai-shell senai-hero-shell">
+                <div class="senai-copy">
+                    <span class="senai-badge">Projeto inicial em Java</span>
+                    <h1 class="senai-title">Gerenciamento de estoque e ativos patrimoniais</h1>
+                    <p class="senai-subtitle">
+                        Controle materiais de laboratorio, registre entradas e saidas e acompanhe o patrimonio da unidade escolar.
+                    </p>
+
+                    <div class="senai-actions">
+                        <a class="senai-button" th:href="@{/login}">Entrar no sistema</a>
+                        <a class="senai-link" th:href="@{/cadastro}">Criar conta</a>
+                    </div>
+                </div>
+
+                <div class="senai-panel">
+                    <h2>O que o sistema faz</h2>
+                    <ul class="senai-list">
+                        <li>Permite cadastro com NIF autorizado.</li>
+                        <li>Controla categorias, materiais e quantidades.</li>
+                        <li>Registra movimentacoes de entrada e saida.</li>
+                        <li>Organiza os ativos patrimoniais da escola.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<header th:fragment="header" class="senai-header">
+    <div class="senai-shell">
+        <a class="senai-brand" th:href="@{/}">
+            <img class="senai-logo" th:src="@{/img/download.png}" alt="SENAI-SP">
+            <span class="senai-brand-text">Sistema de Estoque e Patrimonio</span>
+        </a>
+
+        <nav class="senai-nav" aria-label="Navegacao principal">
+            <a class="senai-link" th:href="@{/cadastro}">Cadastro</a>
+            <a class="senai-button" th:href="@{/login}">Login</a>
+        </nav>
+    </div>
+</header>

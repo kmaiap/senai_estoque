@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Interna | Sistema de Estoque e Patrimonio</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="senai-main">
+        <section class="senai-dashboard">
+            <div class="senai-shell senai-dashboard-shell">
+                <div class="senai-dashboard-header">
+                    <div>
+                        <h1 class="senai-title">Area interna</h1>
+                        <p class="senai-subtitle">
+                            Bem-vindo, <strong th:text="${nome}"></strong>. NIF: <span th:text="${nif}"></span>
+                        </p>
+                    </div>
+
+                    <a class="senai-button" th:href="@{/logout}">Sair</a>
+                </div>
+
+                <div class="senai-metrics">
+                    <article class="senai-metric-card">
+                        <span class="senai-metric-label">Categorias</span>
+                        <strong th:text="${totalCategorias}"></strong>
+                    </article>
+                    <article class="senai-metric-card">
+                        <span class="senai-metric-label">Materiais</span>
+                        <strong th:text="${totalMateriais}"></strong>
+                    </article>
+                    <article class="senai-metric-card">
+                        <span class="senai-metric-label">Movimentacoes</span>
+                        <strong th:text="${totalMovimentacoes}"></strong>
+                    </article>
+                    <article class="senai-metric-card">
+                        <span class="senai-metric-label">Ativos</span>
+                        <strong th:text="${totalAtivos}"></strong>
+                    </article>
+                </div>
+
+                <div class="senai-grid">
+                    <section class="senai-panel">
+                        <h2>Adicionar produto</h2>
+                        <div th:if="${sucessoMaterial}" class="senai-alert senai-alert-success">
+                            <p th:text="${sucessoMaterial}"></p>
+                        </div>
+                        <div th:if="${erroMaterial}" class="senai-alert senai-alert-error">
+                            <p th:text="${erroMaterial}"></p>
+                        </div>
+
+                        <form th:action="@{/app/materiais}" method="post" class="senai-form">
+                            <label class="senai-label" for="materialNome">Nome</label>
+                            <input class="senai-input" id="materialNome" name="nome" type="text"
+                                   th:value="${materialFormNome}" required>
+
+                            <label class="senai-label" for="materialDescricao">Descricao</label>
+                            <input class="senai-input" id="materialDescricao" name="descricao" type="text"
+                                   th:value="${materialFormDescricao}">
+
+                            <label class="senai-label" for="materialQuantidade">Quantidade</label>
+                            <input class="senai-input" id="materialQuantidade" name="quantidadeDisponivel" type="number"
+                                   min="0" th:value="${materialFormQuantidade != null ? materialFormQuantidade : 0}" required>
+
+                            <label class="senai-label" for="materialUnidade">Unidade</label>
+                            <input class="senai-input" id="materialUnidade" name="unidadeMedida" type="text"
+                                   th:value="${materialFormUnidade}" placeholder="unidade, caixa, pacote" required>
+
+                            <label class="senai-label" for="materialCategoria">Categoria</label>
+                            <select class="senai-input" id="materialCategoria" name="categoriaId" required>
+                                <option value="">Selecione</option>
+                                <option th:each="categoria : ${categorias}"
+                                        th:value="${categoria.id}"
+                                        th:text="${categoria.nome}"
+                                        th:selected="${materialFormCategoriaId == categoria.id}">
+                                </option>
+                            </select>
+
+                            <button class="senai-button full-width" type="submit">Salvar produto</button>
+                        </form>
+                    </section>
+
+                    <section class="senai-panel">
+                        <h2>Adicionar patrimonio</h2>
+                        <div th:if="${sucessoAtivo}" class="senai-alert senai-alert-success">
+                            <p th:text="${sucessoAtivo}"></p>
+                        </div>
+                        <div th:if="${erroAtivo}" class="senai-alert senai-alert-error">
+                            <p th:text="${erroAtivo}"></p>
+                        </div>
+
+                        <form th:action="@{/app/ativos}" method="post" class="senai-form">
+                            <label class="senai-label" for="ativoNome">Nome</label>
+                            <input class="senai-input" id="ativoNome" name="nome" type="text"
+                                   th:value="${ativoFormNome}" required>
+
+                            <label class="senai-label" for="ativoDescricao">Descricao</label>
+                            <input class="senai-input" id="ativoDescricao" name="descricao" type="text"
+                                   th:value="${ativoFormDescricao}">
+
+                            <label class="senai-label" for="ativoCodigo">Codigo patrimonial</label>
+                            <input class="senai-input" id="ativoCodigo" name="codigoPatrimonio" type="text"
+                                   th:value="${ativoFormCodigo}" required>
+
+                            <label class="senai-label" for="ativoLocalizacao">Localizacao</label>
+                            <input class="senai-input" id="ativoLocalizacao" name="localizacao" type="text"
+                                   th:value="${ativoFormLocalizacao}" required>
+
+                            <label class="senai-label" for="ativoEstado">Estado de conservacao</label>
+                            <input class="senai-input" id="ativoEstado" name="estadoConservacao" type="text"
+                                   th:value="${ativoFormEstado}" placeholder="Bom, Otimo, Regular" required>
+
+                            <button class="senai-button full-width" type="submit">Salvar patrimonio</button>
+                        </form>
+                    </section>
+                </div>
+
+                <div class="senai-grid">
+                    <section class="senai-panel">
+                        <h2>Relatorio de produtos</h2>
+                        <table class="senai-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Descricao</th>
+                                    <th>Categoria</th>
+                                    <th>Quantidade</th>
+                                    <th>Acoes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${#lists.isEmpty(materiais)}">
+                                    <td colspan="5">Nenhum produto cadastrado.</td>
+                                </tr>
+                                <tr th:each="material : ${materiais}">
+                                    <td th:text="${material.nome}"></td>
+                                    <td th:text="${material.descricao}"></td>
+                                    <td th:text="${material.categoria.nome}"></td>
+                                    <td th:text="${material.quantidadeDisponivel + ' ' + material.unidadeMedida}"></td>
+                                    <td>
+                                        <form th:action="@{'/app/materiais/' + ${material.id} + '/remover'}" method="post">
+                                            <button class="senai-button senai-button-danger" type="submit">Remover</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section class="senai-panel">
+                        <h2>Movimentacoes recentes</h2>
+                        <ul class="senai-list">
+                            <li th:if="${#lists.isEmpty(movimentacoesRecentes)}">Nenhuma movimentacao registrada ainda.</li>
+                            <li th:each="movimentacao : ${movimentacoesRecentes}">
+                                <strong th:text="${movimentacao.tipo}"></strong>
+                                <span th:text="${' - ' + movimentacao.material.nome + ' (' + movimentacao.quantidade + ')'}"></span>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+
+                <div class="senai-grid">
+                    <section class="senai-panel">
+                        <h2>Ativos patrimoniais</h2>
+                        <table class="senai-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Codigo</th>
+                                    <th>Localizacao</th>
+                                    <th>Estado</th>
+                                    <th>Acoes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${#lists.isEmpty(ativos)}">
+                                    <td colspan="5">Nenhum patrimonio cadastrado.</td>
+                                </tr>
+                                <tr th:each="ativo : ${ativos}">
+                                    <td th:text="${ativo.nome}"></td>
+                                    <td th:text="${ativo.codigoPatrimonio}"></td>
+                                    <td th:text="${ativo.localizacao}"></td>
+                                    <td th:text="${ativo.estadoConservacao}"></td>
+                                    <td>
+                                        <form th:action="@{'/app/ativos/' + ${ativo.id} + '/remover'}" method="post">
+                                            <button class="senai-button senai-button-danger" type="submit">Remover</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section class="senai-panel">
+                        <h2>Como usar agora</h2>
+                        <ul class="senai-list">
+                            <li>Cadastre produtos no formulario superior esquerdo.</li>
+                            <li>Cadastre patrimonios no formulario superior direito.</li>
+                            <li>Use o botao remover para excluir um item da lista.</li>
+                            <li>Os endpoints REST continuam disponiveis para testes com Postman.</li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
